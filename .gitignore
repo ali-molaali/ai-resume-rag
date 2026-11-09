@@ -8,6 +8,7 @@ __pycache__/
 
 chroma_db/
 .streamlit/secrets.toml
+PROJECT_STATUS.md
 
 *.log
 .DS_Store

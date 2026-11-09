@@ -54,6 +54,10 @@ def split_text(
             chunks.append(current)
 
             overlap_text = current[-overlap:].strip()
+
+            if " " in overlap_text:
+                overlap_text = overlap_text[overlap_text.find(" ") + 1:]
+
             current = f"{overlap_text} {piece}".strip()
         else:
             current = candidate
