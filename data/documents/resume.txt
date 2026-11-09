@@ -1,0 +1,16 @@
+Name: Ali Molaali
+
+Professional Summary:
+Experienced Java developer with expertise in Spring Boot, REST APIs, databases, and software architecture.
+
+Skills:
+Java, Spring Boot, REST APIs, SQL, PostgreSQL, Docker, Git, React
+
+Experience:
+Senior Java Developer
+Built scalable backend services using Spring Boot.
+Designed REST APIs and integrated relational databases.
+Worked with frontend teams to deliver full-stack applications.
+
+Education:
+Master's degree in Web Engineering.
