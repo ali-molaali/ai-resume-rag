@@ -1,4 +1,10 @@
-﻿import streamlit as st
+import sys
+from pathlib import Path
+
+import streamlit as st
+
+# Streamlit Cloud can execute this file with the app directory as sys.path.
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from app.ingest import ingest_resume
 from app.vector_store import create_collection, search_chunks
