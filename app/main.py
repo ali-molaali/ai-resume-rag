@@ -1,6 +1,7 @@
 ﻿import streamlit as st
 
-from app.vector_store import search_chunks
+from app.ingest import ingest_resume
+from app.vector_store import create_collection, search_chunks
 from app.llm import generate_answer
 
 
@@ -8,6 +9,18 @@ st.set_page_config(
     page_title="CareerLens AI",
     page_icon="📄",
 )
+
+
+@st.cache_resource
+def ensure_resume_indexed() -> None:
+    """Create the resume index on deployments where it does not exist yet."""
+    collection = create_collection()
+
+    if collection.count() == 0:
+        ingest_resume()
+
+
+ensure_resume_indexed()
 
 st.title("CareerLens AI")
 st.write("Ask questions about my professional experience.")
