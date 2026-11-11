@@ -18,8 +18,21 @@ def create_collection():
         metadata={"hnsw:space": "cosine"},
     )
 
+def reset_collection() -> None:
+    """Delete the current collection if it exists."""
+    client = chromadb.PersistentClient(path=str(CHROMA_PATH))
 
-def store_chunks(chunks: list[str]) -> None:
+    existing_collections = [
+        collection.name for collection in client.list_collections()
+    ]
+
+    if COLLECTION_NAME in existing_collections:
+        client.delete_collection(name=COLLECTION_NAME)
+
+def store_chunks(
+    chunks: list[str],
+    sources: list[str] | None = None,
+) -> None:
     """Create embeddings and store resume chunks in ChromaDB."""
     model = SentenceTransformer(EMBEDDING_MODEL_NAME)
     embeddings = model.encode(chunks).tolist()
@@ -27,8 +40,13 @@ def store_chunks(chunks: list[str]) -> None:
     collection = create_collection()
 
     ids = [f"resume-chunk-{index}" for index in range(len(chunks))]
+    chunk_sources = sources or ["resume.pdf"] * len(chunks)
+
     metadatas = [
-        {"source": "resume.txt", "chunk_number": index}
+        {
+            "source": chunk_sources[index],
+            "chunk_number": index,
+        }
         for index in range(len(chunks))
     ]
 

@@ -10,18 +10,20 @@ This project is also a learning project: I am using it to understand document pr
 
 The current version can:
 
-- Read a resume text document
+- Read a resume PDF document
 - Split the document into searchable chunks
 - Convert chunks into embeddings
 - Store them in ChromaDB
 - Retrieve relevant chunks using semantic search
+- Send retrieved context to Groq
+- Generate grounded answers in a Streamlit chat interface
 
-The Streamlit chat experience and final LLM-generated answers are the next parts of the project.
+The current chat experience uses retrieval-augmented generation to produce grounded answers.
 
 ## How it works
 
 ```text
-Resume document
+Resume PDF
       |
       v
 Text chunking
@@ -36,10 +38,13 @@ ChromaDB vector database
 Semantic search
       |
       v
-Relevant resume sections
+Groq LLM
+      |
+      v
+Grounded answer
 ```
 
-In the final version, an LLM will use the retrieved sections to answer questions and provide grounded responses based on the resume.
+The LLM receives only the retrieved resume sections, which helps keep answers grounded in the source document.
 
 ## Technology
 
@@ -49,6 +54,7 @@ In the final version, an LLM will use the retrieved sections to answer questions
 - Streamlit
 - PyPDF
 - python-dotenv
+- Groq
 
 ## Run locally
 
@@ -83,22 +89,32 @@ pip install -r requirements.txt
 
 ### 4. Add a document
 
-Place a text resume at:
+Place the resume PDF at:
 
 ```text
-data/documents/resume.txt
+data/documents/resume.pdf
 ```
 
-### 5. Build the vector store and search it
+### 5. Build the vector store
 
 ```powershell
-python -c "from app.document_loader import load_text_file; from app.text_chunker import split_text; from app.vector_store import store_chunks; text = load_text_file('data/documents/resume.txt'); store_chunks(split_text(text))"
+python -m app.ingest
 ```
 
-Then run a semantic search:
+### 6. Configure the Groq key locally
+
+Create `.streamlit/secrets.toml`:
+
+```toml
+GROQ_API_KEY = "your-groq-api-key"
+```
+
+Never commit this file or expose the key publicly.
+
+### 7. Run the application
 
 ```powershell
-python -c "from app.vector_store import search_chunks; print(search_chunks('What backend technologies are mentioned?'))"
+python -m streamlit run app/main.py
 ```
 
 ## Project structure
@@ -107,6 +123,8 @@ python -c "from app.vector_store import search_chunks; print(search_chunks('What
 ai-resume-rag/
 ├── app/
 │   ├── document_loader.py
+│   ├── ingest.py
+│   ├── llm.py
 │   ├── main.py
 │   ├── text_chunker.py
 │   └── vector_store.py
@@ -126,11 +144,21 @@ ai-resume-rag/
 - [x] Add recursive text chunking
 - [x] Store embeddings in ChromaDB
 - [x] Add semantic search
-- [ ] Add PDF ingestion
-- [ ] Connect retrieval to an LLM
-- [ ] Build the Streamlit chat interface
+- [x] Add PDF ingestion
+- [x] Connect retrieval to an LLM
+- [x] Build the Streamlit chat interface
 - [ ] Add source references to answers
 - [ ] Deploy a live demo on Streamlit Cloud
+
+## Learning approach
+
+This project is developed step by step:
+
+1. Explain the goal and logic before editing.
+2. Show the exact file and code to change.
+3. Explain Python syntax clearly.
+4. Make one focused change at a time.
+5. Verify the result before continuing.
 
 ## Why I built it
 
