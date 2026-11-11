@@ -6,11 +6,15 @@ CareerLens AI turns my resume into a searchable knowledge base. Instead of searc
 
 This project is also a learning project: I am using it to understand document processing, embeddings, vector databases, and AI application design with Python.
 
+## Live demo
+
+[Open CareerLens AI](https://ai-resume-rag.streamlit.app/)
+
 ## What it does
 
 The current version can:
 
-- Read a resume PDF document
+- Read one or more uploaded PDF documents
 - Split the document into searchable chunks
 - Convert chunks into embeddings
 - Store them in ChromaDB
@@ -18,12 +22,14 @@ The current version can:
 - Send retrieved context to Groq
 - Generate grounded answers in a Streamlit chat interface
 
+Uploaded PDFs are processed when **Process PDFs** is clicked and replace the current searchable document index.
+
 The current chat experience uses retrieval-augmented generation to produce grounded answers.
 
 ## How it works
 
 ```text
-Resume PDF
+Uploaded PDF documents
       |
       v
 Text chunking
@@ -89,11 +95,13 @@ pip install -r requirements.txt
 
 ### 4. Add a document
 
-Place the resume PDF at:
+Place the default resume PDF at:
 
 ```text
 data/documents/resume.pdf
 ```
+
+When the app is running, you can also upload one or more PDF files through the interface.
 
 ### 5. Build the vector store
 
@@ -145,10 +153,11 @@ ai-resume-rag/
 - [x] Store embeddings in ChromaDB
 - [x] Add semantic search
 - [x] Add PDF ingestion
+- [x] Add multi-PDF upload and indexing
 - [x] Connect retrieval to an LLM
 - [x] Build the Streamlit chat interface
 - [ ] Add source references to answers
-- [ ] Deploy a live demo on Streamlit Cloud
+- [x] Deploy a live demo on Streamlit Cloud
 
 ## Learning approach
 
